@@ -1,4 +1,5 @@
 import { Task } from "../../../domain/task";
+import { MissingParamError } from "../../../utils/errors";
 import { ITaskRepository } from "../../repositories/task-repository";
 
 interface IUpdateTaskUseCaseRequest {
@@ -18,7 +19,7 @@ export class UpdateTaskUseCase {
         const searchedTask = await this.taskRepository.findById(id);
 
         if (!searchedTask) {
-            throw new Error("Unable to find task");
+            throw new MissingParamError("task id");
         }
 
         const task = new Task({ title, projectId, assignedTo, completed }, id);

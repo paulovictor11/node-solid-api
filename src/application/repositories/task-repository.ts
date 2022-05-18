@@ -1,6 +1,7 @@
 import { Task } from "../../domain/task";
 
 export interface ITaskRepository {
+    findByTitle(title: string): Promise<Task | null>;
     findById(id: string): Promise<Task | null>;
     listAll(): Promise<Task[]>;
     create(task: Task): Promise<void>;

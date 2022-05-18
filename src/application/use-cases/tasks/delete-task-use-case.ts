@@ -1,3 +1,4 @@
+import { MissingParamError } from "../../../utils/errors";
 import { ITaskRepository } from "../../repositories/task-repository";
 
 export class DeleteTaskUseCase {
@@ -7,7 +8,7 @@ export class DeleteTaskUseCase {
         const searchedTask = await this.taskRepository.findById(id);
 
         if (!searchedTask) {
-            throw new Error("Unable to find task");
+            throw new MissingParamError("task id");
         }
 
         await this.taskRepository.delete(id);

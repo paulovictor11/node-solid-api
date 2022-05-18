@@ -1,4 +1,5 @@
 import { Task } from "../../../domain/task";
+import { MissingParamError } from "../../../utils/errors";
 import { ITaskRepository } from "../../repositories/task-repository";
 
 export class FindTaskByIdUseCase {
@@ -8,7 +9,7 @@ export class FindTaskByIdUseCase {
         const searchedTask = await this.taskRepository.findById(id);
 
         if (!searchedTask) {
-            throw new Error("Unable to find task");
+            throw new MissingParamError("task id");
         }
 
         return searchedTask;

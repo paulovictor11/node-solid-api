@@ -1,4 +1,5 @@
 import { Task } from "../../../domain/task";
+import { MissingParamError } from "../../../utils/errors";
 import { ITaskRepository } from "../../repositories/task-repository";
 
 interface ICreateTaskUseCaseRequest {
@@ -18,19 +19,15 @@ export class CreateTaskUseCase {
         completed = false,
     }: ICreateTaskUseCaseRequest): Promise<void> {
         if (!title) {
-            throw new Error("Title is required");
+            throw new MissingParamError("title");
         }
 
         if (!projectId) {
-            throw new Error("Project is required");
+            throw new MissingParamError("project id");
         }
 
         if (!assignedTo) {
-            throw new Error("User is required");
-        }
-
-        if (!title) {
-            throw new Error("Title is required");
+            throw new MissingParamError("user");
         }
 
         const task = new Task({ title, projectId, assignedTo, completed });

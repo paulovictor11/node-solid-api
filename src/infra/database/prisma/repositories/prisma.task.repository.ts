@@ -3,6 +3,26 @@ import { Task } from "../../../../domain/task";
 import { prisma } from "../prisma";
 
 export class PrismaTaskRepository implements ITaskRepository {
+    async findByTitle(title: string): Promise<Task | null> {
+        const task = await prisma.task.findFirst({
+            where: { title },
+        });
+
+        if (!task) {
+            return null;
+        }
+
+        return new Task(
+            {
+                title: task.title,
+                projectId: task.projectId,
+                assignedTo: task.assignedTo,
+                completed: task.completed,
+            },
+            task.id
+        );
+    }
+
     async findById(id: string): Promise<Task | null> {
         const task = await prisma.task.findUnique({
             where: { id },
