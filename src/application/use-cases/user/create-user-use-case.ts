@@ -1,4 +1,6 @@
 import { User } from "../../../domain/user";
+import { InvalidParamError, MissingParamError } from "../../../utils/errors";
+import { EmailValidator } from "../../../utils/helpers/email-validator";
 import { IUserRepository } from "../../repositories/user-repository";
 
 interface ICreateUserUseCaseRequest {
@@ -8,7 +10,10 @@ interface ICreateUserUseCaseRequest {
 }
 
 export class CreateUserUseCase {
-    constructor(private userRepository: IUserRepository) {}
+    constructor(
+        private userRepository: IUserRepository,
+        private emailValidator: EmailValidator
+    ) {}
 
     async execute({
         name,
@@ -16,15 +21,15 @@ export class CreateUserUseCase {
         password,
     }: ICreateUserUseCaseRequest): Promise<void> {
         if (!name) {
-            throw new Error("Name is required");
+            throw new MissingParamError("name");
         }
 
-        if (!email) {
-            throw new Error("Email is required");
+        if (!this.emailValidator.isValid(email)) {
+            throw new InvalidParamError("email");
         }
 
         if (!password) {
-            throw new Error("Password is required");
+            throw new MissingParamError("password");
         }
 
         const userAlreadyExists = await this.userRepository.findByEmail(email);

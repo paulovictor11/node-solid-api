@@ -1,4 +1,5 @@
 import { User } from "../../../domain/user";
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { IUserRepository } from "../../repositories/user-repository";
 
 interface IUpdateUserUseCaseRequest {
@@ -17,7 +18,7 @@ export class UpdateUserUseCase {
         const searchedUser = await this.userRepository.findById(id);
 
         if (!searchedUser) {
-            throw new Error("Unable to find user");
+            throw new NotFoundError("user");
         }
 
         const user = new User({ name, email, password }, id);

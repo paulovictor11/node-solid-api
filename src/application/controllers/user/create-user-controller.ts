@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaUserRepository } from "../../../infra/database/prisma/repositories/prisma-user-repository";
+import { EmailValidator } from "../../../utils/helpers/email-validator";
 import { IControllerRepository } from "../../repositories/controller-repository";
 import { CreateUserUseCase } from "../../use-cases/user/create-user-use-case";
 
@@ -9,8 +10,10 @@ export class CreateUserController implements IControllerRepository {
             const { name, email, password } = request.body;
 
             const prismaUserRespository = new PrismaUserRepository();
+            const emailValidator = new EmailValidator();
             const createUserUseCase = new CreateUserUseCase(
-                prismaUserRespository
+                prismaUserRespository,
+                emailValidator
             );
 
             await createUserUseCase.execute({ name, email, password });

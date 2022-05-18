@@ -1,3 +1,4 @@
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { IUserRepository } from "../../repositories/user-repository";
 
 export class DeleteUserUseCase {
@@ -7,7 +8,7 @@ export class DeleteUserUseCase {
         const searchedUser = await this.userRepository.findById(id);
 
         if (!searchedUser) {
-            throw new Error("Unable to find user");
+            throw new NotFoundError("user");
         }
 
         await this.userRepository.delete(id);
