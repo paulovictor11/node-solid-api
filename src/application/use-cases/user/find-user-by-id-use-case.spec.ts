@@ -15,7 +15,9 @@ const userSpy = {
 describe("Find user by id use case", () => {
     afterAll(async () => {
         const user = await makePrismaUserRepository.findByEmail(userSpy.email);
-        await makePrismaUserRepository.delete(user!.id);
+        if (user) {
+            await makePrismaUserRepository.delete(user.id);
+        }
     });
 
     it("should throw an error when no user id is provided", async () => {

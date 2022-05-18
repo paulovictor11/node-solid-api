@@ -1,4 +1,5 @@
 import { Project } from "../../../domain/project";
+import { MissingParamError } from "../../../utils/errors";
 import { IProjectRepository } from "../../repositories/project-repository";
 
 export class FindProjectByIdUseCase {
@@ -8,7 +9,7 @@ export class FindProjectByIdUseCase {
         const searchedProject = await this.projectRepository.findById(id);
 
         if (!searchedProject) {
-            throw new Error("Unable to find project");
+            throw new MissingParamError("project id");
         }
 
         return searchedProject;

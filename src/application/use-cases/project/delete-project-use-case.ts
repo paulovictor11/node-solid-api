@@ -1,3 +1,4 @@
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { IProjectRepository } from "../../repositories/project-repository";
 
 export class DeleteProjectUseCase {
@@ -7,7 +8,7 @@ export class DeleteProjectUseCase {
         const searchedProject = await this.projectRepository.findById(id);
 
         if (!searchedProject) {
-            throw new Error("Unable to find project");
+            throw new NotFoundError("project");
         }
 
         await this.projectRepository.delete(id);

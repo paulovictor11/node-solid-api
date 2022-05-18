@@ -19,12 +19,16 @@ describe("Create user use case", () => {
         const user2 = await makePrismaUserRepository.findByEmail(
             "test2_create@email.com"
         );
-        await makePrismaUserRepository.delete(user2!.id);
+        if (user2) {
+            await makePrismaUserRepository.delete(user2.id);
+        }
 
         const user1 = await makePrismaUserRepository.findByEmail(
             "test_create@email.com"
         );
-        await makePrismaUserRepository.delete(user1!.id);
+        if (user1) {
+            await makePrismaUserRepository.delete(user1.id);
+        }
     });
 
     it("should throw an error when no name is provided", async () => {

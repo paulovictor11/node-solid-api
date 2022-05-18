@@ -1,4 +1,5 @@
 import { Project } from "../../../domain/project";
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { IProjectRepository } from "../../repositories/project-repository";
 
 interface IUpdateProjectUseCaseRequest {
@@ -17,7 +18,7 @@ export class UpdateProjectUseCase {
         const searchedProject = await this.projectRepository.findById(id);
 
         if (!searchedProject) {
-            throw new Error("Unable to find project");
+            throw new NotFoundError("project");
         }
 
         const project = new Project({ title, description, userId }, id);

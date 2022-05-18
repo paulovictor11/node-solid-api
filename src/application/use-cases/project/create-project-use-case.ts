@@ -1,5 +1,6 @@
 import { IProjectRepository } from "../../repositories/project-repository";
 import { Project } from "../../../domain/project";
+import { MissingParamError } from "../../../utils/errors";
 
 interface ICreateProjectUseCaseRequest {
     title: string;
@@ -16,15 +17,15 @@ export class CreateProjectUseCase {
         userId,
     }: ICreateProjectUseCaseRequest): Promise<void> {
         if (!title) {
-            throw new Error("Title is required");
+            throw new MissingParamError("title");
         }
 
         if (!description) {
-            throw new Error("Description is required");
+            throw new MissingParamError("description");
         }
 
         if (!userId) {
-            throw new Error("User is required");
+            throw new MissingParamError("user id");
         }
 
         const project = new Project({ title, description, userId });

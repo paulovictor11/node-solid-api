@@ -4,6 +4,25 @@ import { Task } from "../../../../domain/task";
 import { prisma } from "../prisma";
 
 export class PrismaProjectRepository implements IProjectRepository {
+    async findByTitle(title: string): Promise<Project | null> {
+        const project = await prisma.project.findFirst({
+            where: { title },
+        });
+
+        if (!project) {
+            return null;
+        }
+
+        return new Project(
+            {
+                title: project.title,
+                description: project.description,
+                userId: project.userId,
+            },
+            project.id
+        );
+    }
+
     async findById(id: string): Promise<Project | null> {
         const project = await prisma.project.findUnique({
             where: { id },
