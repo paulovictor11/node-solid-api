@@ -7,17 +7,34 @@ export class PrismaProjectRepository implements IProjectRepository {
     async findByTitle(title: string): Promise<Project | null> {
         const project = await prisma.project.findFirst({
             where: { title },
+            include: {
+                tasks: true,
+            },
         });
 
         if (!project) {
             return null;
         }
 
+        const tasks = project.tasks.map(
+            (task) =>
+                new Task(
+                    {
+                        title: task.title,
+                        projectId: task.projectId,
+                        assignedTo: task.assignedTo,
+                        completed: task.completed,
+                    },
+                    task.id
+                )
+        );
+
         return new Project(
             {
                 title: project.title,
                 description: project.description,
                 userId: project.userId,
+                tasks,
             },
             project.id
         );

@@ -27,7 +27,7 @@ export class Project {
         return this.props.userId;
     }
 
-    get task(): Task[] {
+    get tasks(): Task[] {
         return this.props.tasks ?? [];
     }
 
