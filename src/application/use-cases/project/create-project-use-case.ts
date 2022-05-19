@@ -1,6 +1,6 @@
-import { IProjectRepository } from "../../repositories/project-repository";
 import { Project } from "../../../domain/project";
 import { MissingParamError } from "../../../utils/errors";
+import { IProjectRepository } from "../../repositories/domain/project-repository";
 
 interface ICreateProjectUseCaseRequest {
     title: string;

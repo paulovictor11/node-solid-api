@@ -1,5 +1,5 @@
 import { Project } from "../../../domain/project";
-import { IProjectRepository } from "../../repositories/project-repository";
+import { IProjectRepository } from "../../repositories/domain/project-repository";
 
 export class ListAllProjectsUseCase {
     constructor(private projectRepository: IProjectRepository) {}

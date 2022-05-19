@@ -1,4 +1,4 @@
-import { Task } from "../../domain/task";
+import { Task } from "../../../domain/task";
 
 export interface ITaskRepository {
     findByTitle(title: string): Promise<Task | null>;

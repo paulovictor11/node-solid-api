@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaUserRepository } from "../../../infra/database/prisma/repositories/prisma-user-repository";
-import { IControllerRepository } from "../../repositories/controller-repository";
+import { IControllerRepository } from "../../repositories/domain/controller-repository";
 import { UpdateUserUseCase } from "../../use-cases/user/update-user-use-case";
 
 export class UpdateUserController implements IControllerRepository {

@@ -2,11 +2,17 @@ import { User } from "../../../domain/user";
 import { PrismaUserRepository } from "../../../infra/database/prisma/repositories/prisma-user-repository";
 import { InvalidParamError, MissingParamError } from "../../../utils/errors";
 import { EmailValidator } from "../../../utils/helpers/email-validator";
+import { Encrypter } from "../../../utils/helpers/encrypter";
 import { CreateUserUseCase } from "./create-user-use-case";
 
 const makePrismaUserRepository = new PrismaUserRepository();
 const emailValidator = new EmailValidator();
-const makeSut = new CreateUserUseCase(makePrismaUserRepository, emailValidator);
+const encrypter = new Encrypter();
+const makeSut = new CreateUserUseCase(
+    makePrismaUserRepository,
+    emailValidator,
+    encrypter
+);
 
 const userSpy = {
     name: "Test Create",

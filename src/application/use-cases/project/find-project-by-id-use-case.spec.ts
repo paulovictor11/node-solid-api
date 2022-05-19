@@ -11,14 +11,14 @@ const makeSut = new FindProjectByIdUseCase(makePrismaProjectRespository);
 const projectSpy = {
     title: "Test Find",
     description: "Lorem ipsum",
-    userId: "fe248f27-5761-4435-aade-b8de2dccff76",
+    userId: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
 };
 
 const makePrismaTaskRepository = new PrismaTaskRepository();
 const taskSpy = {
     title: "Test Create Task",
     projectId: "",
-    assignedTo: "54b40821-4d38-4a1c-b0db-353a7071f14e",
+    assignedTo: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
     completed: false,
 };
 
@@ -32,7 +32,6 @@ describe("Find project by id use case", () => {
         const project = await makePrismaProjectRespository.findByTitle(
             projectSpy.title
         );
-
         if (project) {
             await makePrismaProjectRespository.delete(project.id);
         }

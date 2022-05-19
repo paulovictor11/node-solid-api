@@ -1,4 +1,4 @@
-import { IProjectRepository } from "../../../../application/repositories/project-repository";
+import { IProjectRepository } from "../../../../application/repositories/domain/project-repository";
 import { Project } from "../../../../domain/project";
 import { Task } from "../../../../domain/task";
 import { prisma } from "../prisma";

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaProjectRepository } from "../../../infra/database/prisma/repositories/prisma-project-repository";
-import { IControllerRepository } from "../../repositories/controller-repository";
+import { IControllerRepository } from "../../repositories/domain/controller-repository";
 import { CreateProjectUseCase } from "../../use-cases/project/create-project-use-case";
 
 export class CreateProjectController implements IControllerRepository {

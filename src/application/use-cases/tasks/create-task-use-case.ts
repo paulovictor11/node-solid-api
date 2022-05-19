@@ -1,6 +1,6 @@
 import { Task } from "../../../domain/task";
 import { MissingParamError } from "../../../utils/errors";
-import { ITaskRepository } from "../../repositories/task-repository";
+import { ITaskRepository } from "../../repositories/domain/task-repository";
 
 interface ICreateTaskUseCaseRequest {
     title: string;

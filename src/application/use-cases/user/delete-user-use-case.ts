@@ -1,5 +1,5 @@
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
-import { IUserRepository } from "../../repositories/user-repository";
+import { IUserRepository } from "../../repositories/domain/user-repository";
 
 export class DeleteUserUseCase {
     constructor(private userRepository: IUserRepository) {}

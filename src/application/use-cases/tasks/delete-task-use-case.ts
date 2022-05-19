@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../../utils/errors";
-import { ITaskRepository } from "../../repositories/task-repository";
+import { ITaskRepository } from "../../repositories/domain/task-repository";
 
 export class DeleteTaskUseCase {
     constructor(private taskRepository: ITaskRepository) {}

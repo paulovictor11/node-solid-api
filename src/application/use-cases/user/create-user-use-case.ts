@@ -1,7 +1,8 @@
 import { User } from "../../../domain/user";
 import { InvalidParamError, MissingParamError } from "../../../utils/errors";
-import { EmailValidator } from "../../../utils/helpers/email-validator";
-import { IUserRepository } from "../../repositories/user-repository";
+import { IUserRepository } from "../../repositories/domain/user-repository";
+import { IEmailValidatorRepository } from "../../repositories/helper/email-validator-repository";
+import { IEncrypterRepository } from "../../repositories/helper/encrypter-repository";
 
 interface ICreateUserUseCaseRequest {
     name: string;
@@ -12,7 +13,8 @@ interface ICreateUserUseCaseRequest {
 export class CreateUserUseCase {
     constructor(
         private userRepository: IUserRepository,
-        private emailValidator: EmailValidator
+        private emailValidator: IEmailValidatorRepository,
+        private encrypter: IEncrypterRepository
     ) {}
 
     async execute({
@@ -37,7 +39,12 @@ export class CreateUserUseCase {
             throw new Error("User already exists");
         }
 
-        const user = new User({ name, email, password });
+        const hashedPassword = await this.encrypter.encrypt(password);
+        const user = new User({
+            name,
+            email,
+            password: hashedPassword,
+        });
         await this.userRepository.create(user);
     }
 }

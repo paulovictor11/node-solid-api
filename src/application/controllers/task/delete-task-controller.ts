@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaTaskRepository } from "../../../infra/database/prisma/repositories/prisma.task.repository";
-import { IControllerRepository } from "../../repositories/controller-repository";
+import { IControllerRepository } from "../../repositories/domain/controller-repository";
 import { DeleteTaskUseCase } from "../../use-cases/tasks/delete-task-use-case";
 
 export class DeleteTaskController implements IControllerRepository {

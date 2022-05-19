@@ -8,8 +8,8 @@ const makeSut = new UpdateTaskUseCase(makePrismaTaskRepository);
 
 const taskSpy = {
     title: "Test Update",
-    projectId: "d9138150-2ebd-4648-9032-c9b6ea39df72",
-    assignedTo: "54b40821-4d38-4a1c-b0db-353a7071f14e",
+    projectId: "0cba49a5-d610-4b78-bfa6-68cc20b2b557",
+    assignedTo: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
     completed: false,
 };
 

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { PrismaUserRepository } from "../../../infra/database/prisma/repositories/prisma-user-repository";
 import { EmailValidator } from "../../../utils/helpers/email-validator";
-import { IControllerRepository } from "../../repositories/controller-repository";
+import { Encrypter } from "../../../utils/helpers/encrypter";
+import { IControllerRepository } from "../../repositories/domain/controller-repository";
 import { CreateUserUseCase } from "../../use-cases/user/create-user-use-case";
 
 export class CreateUserController implements IControllerRepository {
@@ -11,9 +12,11 @@ export class CreateUserController implements IControllerRepository {
 
             const prismaUserRespository = new PrismaUserRepository();
             const emailValidator = new EmailValidator();
+            const encrypter = new Encrypter();
             const createUserUseCase = new CreateUserUseCase(
                 prismaUserRespository,
-                emailValidator
+                emailValidator,
+                encrypter
             );
 
             await createUserUseCase.execute({ name, email, password });

@@ -1,4 +1,4 @@
-import { ITaskRepository } from "../../../../application/repositories/task-repository";
+import { ITaskRepository } from "../../../../application/repositories/domain/task-repository";
 import { Task } from "../../../../domain/task";
 import { prisma } from "../prisma";
 

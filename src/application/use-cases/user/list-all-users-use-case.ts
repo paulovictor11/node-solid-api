@@ -1,5 +1,5 @@
 import { User } from "../../../domain/user";
-import { IUserRepository } from "../../repositories/user-repository";
+import { IUserRepository } from "../../repositories/domain/user-repository";
 
 export class ListAllUsersUseCase {
     constructor(private userRepository: IUserRepository) {}

@@ -9,7 +9,7 @@ const makeSut = new DeleteProjectUseCase(makePrismaProjectRespository);
 const projectSpy = {
     title: "Test Delete",
     description: "Lorem ipsum",
-    userId: "fe248f27-5761-4435-aade-b8de2dccff76",
+    userId: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
 };
 
 describe("Delete project use case", () => {

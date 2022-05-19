@@ -1,4 +1,4 @@
-import { IUserRepository } from "../../../../application/repositories/user-repository";
+import { IUserRepository } from "../../../../application/repositories/domain/user-repository";
 import { User } from "../../../../domain/user";
 import { prisma } from "../prisma";
 

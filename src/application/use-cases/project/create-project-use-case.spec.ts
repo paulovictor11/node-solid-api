@@ -8,7 +8,7 @@ const makeSut = new CreateProjectUseCase(makePrismaProjectRespository);
 const projectSpy = {
     title: "Test Create",
     description: "Lorem ipsum",
-    userId: "fe248f27-5761-4435-aade-b8de2dccff76",
+    userId: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
 };
 
 describe("Create project use case", () => {
