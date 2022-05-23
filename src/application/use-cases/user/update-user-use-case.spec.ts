@@ -3,8 +3,15 @@ import { PrismaUserRepository } from "../../../infra/database/prisma/repositorie
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { UpdateUserUseCase } from "./update-user-use-case";
 
-const makePrismaUserRepository = new PrismaUserRepository();
-const makeSut = new UpdateUserUseCase(makePrismaUserRepository);
+const makeSut = () => {
+    const makePrismaUserRepository = new PrismaUserRepository();
+    const sut = new UpdateUserUseCase(makePrismaUserRepository);
+
+    return {
+        makePrismaUserRepository,
+        sut,
+    };
+};
 
 const userSpy = {
     name: "Test Update",
@@ -14,6 +21,7 @@ const userSpy = {
 
 describe("Update user use case", () => {
     afterAll(async () => {
+        const { makePrismaUserRepository } = makeSut();
         const user = await makePrismaUserRepository.findByEmail(userSpy.email);
         if (user) {
             await makePrismaUserRepository.delete(user.id);
@@ -21,16 +29,18 @@ describe("Update user use case", () => {
     });
 
     it("should throw an error when an invalid user id is provided", async () => {
-        const promise = makeSut.execute(userSpy, "");
+        const { sut } = makeSut();
+        const promise = sut.execute(userSpy, "");
 
         expect(promise).rejects.toThrow(new NotFoundError("user"));
     });
 
     it("should be able to update a user with correct data provided", async () => {
+        const { sut, makePrismaUserRepository } = makeSut();
         await makePrismaUserRepository.create(new User(userSpy));
 
         const user = await makePrismaUserRepository.findByEmail(userSpy.email);
-        const promise = makeSut.execute(
+        const promise = sut.execute(
             { ...userSpy, password: "123456" },
             user!.id
         );

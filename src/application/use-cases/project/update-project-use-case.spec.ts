@@ -3,8 +3,15 @@ import { PrismaProjectRepository } from "../../../infra/database/prisma/reposito
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { UpdateProjectUseCase } from "./update-project-use-case";
 
-const makePrismaProjectRespository = new PrismaProjectRepository();
-const makeSut = new UpdateProjectUseCase(makePrismaProjectRespository);
+const makeSut = () => {
+    const makePrismaProjectRespository = new PrismaProjectRepository();
+    const sut = new UpdateProjectUseCase(makePrismaProjectRespository);
+
+    return {
+        makePrismaProjectRespository,
+        sut,
+    };
+};
 
 const projectSpy = {
     title: "Test Update",
@@ -14,6 +21,7 @@ const projectSpy = {
 
 describe("Update project use case", () => {
     afterAll(async () => {
+        const { sut, makePrismaProjectRespository } = makeSut();
         const project = await makePrismaProjectRespository.findByTitle(
             projectSpy.title
         );
@@ -24,18 +32,20 @@ describe("Update project use case", () => {
     });
 
     it("should throw an error if no project id is provided", async () => {
-        const promise = makeSut.execute(projectSpy, "");
+        const { sut } = makeSut();
+        const promise = sut.execute(projectSpy, "");
 
         expect(promise).rejects.toThrow(new NotFoundError("project"));
     });
 
     it("should be able to update a project with correct data provided", async () => {
+        const { sut, makePrismaProjectRespository } = makeSut();
         await makePrismaProjectRespository.create(new Project(projectSpy));
 
         const project = await makePrismaProjectRespository.findByTitle(
             projectSpy.title
         );
-        const promise = makeSut.execute(
+        const promise = sut.execute(
             { ...projectSpy, description: "My Lorem Ipsum" },
             project!.id
         );

@@ -3,8 +3,15 @@ import { PrismaTaskRepository } from "../../../infra/database/prisma/repositorie
 import { MissingParamError } from "../../../utils/errors";
 import { UpdateTaskUseCase } from "./update-task-use-case";
 
-const makePrismaTaskRepository = new PrismaTaskRepository();
-const makeSut = new UpdateTaskUseCase(makePrismaTaskRepository);
+const makeSut = () => {
+    const makePrismaTaskRepository = new PrismaTaskRepository();
+    const sut = new UpdateTaskUseCase(makePrismaTaskRepository);
+
+    return {
+        makePrismaTaskRepository,
+        sut,
+    };
+};
 
 const taskSpy = {
     title: "Test Update",
@@ -15,6 +22,7 @@ const taskSpy = {
 
 describe("Update task use case", () => {
     afterAll(async () => {
+        const { makePrismaTaskRepository } = makeSut();
         const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
         if (task) {
             await makePrismaTaskRepository.delete(task.id);
@@ -22,19 +30,18 @@ describe("Update task use case", () => {
     });
 
     it("should throw an error when no task id is provided", async () => {
-        const promise = makeSut.execute(taskSpy, "");
+        const { sut } = makeSut();
+        const promise = sut.execute(taskSpy, "");
 
         expect(promise).rejects.toThrow(new MissingParamError("task id"));
     });
 
     it("should be able to update a task with correct data provided", async () => {
+        const { sut, makePrismaTaskRepository } = makeSut();
         await makePrismaTaskRepository.create(new Task(taskSpy));
 
         const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
-        const promise = makeSut.execute(
-            { ...taskSpy, completed: true },
-            task!.id
-        );
+        const promise = sut.execute({ ...taskSpy, completed: true }, task!.id);
 
         expect(promise).resolves.not.toThrow();
     });

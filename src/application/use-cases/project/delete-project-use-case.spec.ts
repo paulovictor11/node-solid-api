@@ -3,8 +3,15 @@ import { PrismaProjectRepository } from "../../../infra/database/prisma/reposito
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { DeleteProjectUseCase } from "./delete-project-use-case";
 
-const makePrismaProjectRespository = new PrismaProjectRepository();
-const makeSut = new DeleteProjectUseCase(makePrismaProjectRespository);
+const makeSut = () => {
+    const makePrismaProjectRespository = new PrismaProjectRepository();
+    const sut = new DeleteProjectUseCase(makePrismaProjectRespository);
+
+    return {
+        makePrismaProjectRespository,
+        sut,
+    };
+};
 
 const projectSpy = {
     title: "Test Delete",
@@ -14,18 +21,21 @@ const projectSpy = {
 
 describe("Delete project use case", () => {
     it("should throw an error when no project id is provided", async () => {
-        const promise = makeSut.execute("");
+        const { sut } = makeSut();
+        const promise = sut.execute("");
 
         expect(promise).rejects.toThrow(new NotFoundError("project"));
     });
 
     it("should be able to delete a project", async () => {
+        const { sut, makePrismaProjectRespository } = makeSut();
+
         await makePrismaProjectRespository.create(new Project(projectSpy));
 
         const project = await makePrismaProjectRespository.findByTitle(
             projectSpy.title
         );
-        const promise = makeSut.execute(project!.id);
+        const promise = sut.execute(project!.id);
 
         expect(promise).resolves.not.toThrow();
     });

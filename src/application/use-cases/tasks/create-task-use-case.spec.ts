@@ -2,8 +2,15 @@ import { PrismaTaskRepository } from "../../../infra/database/prisma/repositorie
 import { MissingParamError } from "../../../utils/errors";
 import { CreateTaskUseCase } from "./create-task-use-case";
 
-const makePrismaTaskRepository = new PrismaTaskRepository();
-const makeSut = new CreateTaskUseCase(makePrismaTaskRepository);
+const makeSut = () => {
+    const makePrismaTaskRepository = new PrismaTaskRepository();
+    const sut = new CreateTaskUseCase(makePrismaTaskRepository);
+
+    return {
+        makePrismaTaskRepository,
+        sut,
+    };
+};
 
 const taskSpy = {
     title: "Test Create",
@@ -14,6 +21,7 @@ const taskSpy = {
 
 describe("Create task use case", () => {
     afterAll(async () => {
+        const { makePrismaTaskRepository } = makeSut();
         const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
         if (task) {
             await makePrismaTaskRepository.delete(task.id);
@@ -21,28 +29,32 @@ describe("Create task use case", () => {
     });
 
     it("should throw an error when no title is provided", () => {
+        const { sut } = makeSut();
         const task = { ...taskSpy, title: "" };
-        const promise = makeSut.execute(task);
+        const promise = sut.execute(task);
 
         expect(promise).rejects.toThrow(new MissingParamError("title"));
     });
 
     it("should throw an error when no project id is provided", () => {
+        const { sut } = makeSut();
         const task = { ...taskSpy, projectId: "" };
-        const promise = makeSut.execute(task);
+        const promise = sut.execute(task);
 
         expect(promise).rejects.toThrow(new MissingParamError("project id"));
     });
 
     it("should throw an error when no user responsable is provided", () => {
+        const { sut } = makeSut();
         const task = { ...taskSpy, assignedTo: "" };
-        const promise = makeSut.execute(task);
+        const promise = sut.execute(task);
 
         expect(promise).rejects.toThrow(new MissingParamError("user"));
     });
 
     it("should be able to create a task", async () => {
-        const promise = makeSut.execute(taskSpy);
+        const { sut } = makeSut();
+        const promise = sut.execute(taskSpy);
 
         expect(promise).resolves.not.toThrow();
     });

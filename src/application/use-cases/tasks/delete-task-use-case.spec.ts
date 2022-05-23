@@ -3,8 +3,15 @@ import { PrismaTaskRepository } from "../../../infra/database/prisma/repositorie
 import { MissingParamError } from "../../../utils/errors";
 import { DeleteTaskUseCase } from "./delete-task-use-case";
 
-const makePrismaTaskRepository = new PrismaTaskRepository();
-const makeSut = new DeleteTaskUseCase(makePrismaTaskRepository);
+const makeSut = () => {
+    const makePrismaTaskRepository = new PrismaTaskRepository();
+    const sut = new DeleteTaskUseCase(makePrismaTaskRepository);
+
+    return {
+        makePrismaTaskRepository,
+        sut,
+    };
+};
 
 const taskSpy = {
     title: "Test Delete",
@@ -15,16 +22,18 @@ const taskSpy = {
 
 describe("Delete task use case", () => {
     it("should throw an error when no task id is provided", async () => {
-        const promise = makeSut.execute("");
+        const { sut } = makeSut();
+        const promise = sut.execute("");
 
         expect(promise).rejects.toThrow(new MissingParamError("task id"));
     });
 
     it("should be able to delete a task", async () => {
+        const { sut, makePrismaTaskRepository } = makeSut();
         await makePrismaTaskRepository.create(new Task(taskSpy));
 
         const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
-        const promise = makeSut.execute(task!.id);
+        const promise = sut.execute(task!.id);
 
         expect(promise).resolves.not.toThrow();
     });
