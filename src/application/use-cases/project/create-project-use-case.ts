@@ -28,7 +28,8 @@ export class CreateProjectUseCase {
             throw new MissingParamError("user id");
         }
 
-        const project = new Project({ title, description, userId });
-        await this.projectRepository.create(project);
+        await this.projectRepository.create(
+            new Project({ title, description, userId })
+        );
     }
 }

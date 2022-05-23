@@ -46,5 +46,6 @@ describe("Encrypter", () => {
         const promise = makeSut.encrypt("12345");
 
         expect(promise).resolves.not.toThrow();
+        expect(await promise).toBeTruthy();
     });
 });

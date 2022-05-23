@@ -30,7 +30,8 @@ export class CreateTaskUseCase {
             throw new MissingParamError("user");
         }
 
-        const task = new Task({ title, projectId, assignedTo, completed });
-        await this.taskRepository.create(task);
+        await this.taskRepository.create(
+            new Task({ title, projectId, assignedTo, completed })
+        );
     }
 }

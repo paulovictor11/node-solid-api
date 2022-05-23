@@ -40,11 +40,12 @@ export class CreateUserUseCase {
         }
 
         const hashedPassword = await this.encrypter.encrypt(password);
-        const user = new User({
-            name,
-            email,
-            password: hashedPassword,
-        });
-        await this.userRepository.create(user);
+        await this.userRepository.create(
+            new User({
+                name,
+                email,
+                password: hashedPassword,
+            })
+        );
     }
 }

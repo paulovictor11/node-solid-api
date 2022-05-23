@@ -1,12 +1,12 @@
-import { PrismaProjectRepository } from "../../../infra/database/prisma/repositories/prisma-project-repository";
+import { InMemoryProjectRepository } from "../../../tests/repositories/InMemoryProjectRepository";
 import { ListAllProjectsUseCase } from "./list-all-projects-use-case";
 
 const makeSut = () => {
-    const makePrismaProjectRespository = new PrismaProjectRepository();
-    const sut = new ListAllProjectsUseCase(makePrismaProjectRespository);
+    const repository = new InMemoryProjectRepository();
+    const sut = new ListAllProjectsUseCase(repository);
 
     return {
-        makePrismaProjectRespository,
+        repository,
         sut,
     };
 };

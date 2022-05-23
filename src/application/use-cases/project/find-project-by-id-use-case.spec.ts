@@ -1,29 +1,33 @@
+import crypto from "crypto";
 import { Project } from "../../../domain/project";
 import { Task } from "../../../domain/task";
-import { PrismaProjectRepository } from "../../../infra/database/prisma/repositories/prisma-project-repository";
-import { PrismaTaskRepository } from "../../../infra/database/prisma/repositories/prisma.task.repository";
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
+import { InMemoryProjectRepository } from "../../../tests/repositories/InMemoryProjectRepository";
+import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
 import { MissingParamError } from "../../../utils/errors";
 import { FindProjectByIdUseCase } from "./find-project-by-id-use-case";
 
 const makeSut = () => {
-    const makePrismaTaskRepository = new PrismaTaskRepository();
-    const makePrismaProjectRespository = new PrismaProjectRepository();
-    const sut = new FindProjectByIdUseCase(makePrismaProjectRespository);
+    const taskRepository = new InMemoryTaskRepository();
+    const repository = new InMemoryProjectRepository();
+    const sut = new FindProjectByIdUseCase(repository);
 
     return {
-        makePrismaTaskRepository,
-        makePrismaProjectRespository,
+        taskRepository,
+        repository,
         sut,
     };
 };
 
 const projectSpy = {
+    id: crypto.randomUUID(),
     title: "Test Find",
     description: "Lorem ipsum",
     userId: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
 };
 
 const taskSpy = {
+    id: crypto.randomUUID(),
     title: "Test Create Task",
     projectId: "",
     assignedTo: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
@@ -31,22 +35,6 @@ const taskSpy = {
 };
 
 describe("Find project by id use case", () => {
-    afterAll(async () => {
-        const { makePrismaTaskRepository, makePrismaProjectRespository } =
-            makeSut();
-        const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
-        if (task) {
-            await makePrismaTaskRepository.delete(task.id);
-        }
-
-        const project = await makePrismaProjectRespository.findByTitle(
-            projectSpy.title
-        );
-        if (project) {
-            await makePrismaProjectRespository.delete(project.id);
-        }
-    });
-
     it("should throw an error if no project id is provided", async () => {
         const { sut } = makeSut();
         const promise = sut.execute("");
@@ -54,47 +42,41 @@ describe("Find project by id use case", () => {
         expect(promise).rejects.toThrow(new MissingParamError("project id"));
     });
 
+    it("should throw an error if an invalid project id is provided", async () => {
+        const { sut } = makeSut();
+        const promise = sut.execute(projectSpy.id);
+
+        expect(promise).rejects.toThrow(new NotFoundError("project"));
+    });
+
     it("should return empty array of tasks when no tasks is add to the project", async () => {
-        const { sut, makePrismaProjectRespository } = makeSut();
+        const { sut, repository } = makeSut();
+        await repository.create(new Project({ ...projectSpy }, projectSpy.id));
 
-        await makePrismaProjectRespository.create(new Project(projectSpy));
-
-        const searchedProject = await makePrismaProjectRespository.findByTitle(
-            projectSpy.title
-        );
-        const project = await sut.execute(searchedProject!.id);
+        const project = await sut.execute(projectSpy.id);
 
         expect(project.tasks).toStrictEqual([]);
     });
 
-    it("should return empty array with tasks", async () => {
-        const { sut, makePrismaProjectRespository, makePrismaTaskRepository } =
-            makeSut();
-
-        await makePrismaProjectRespository.create(new Project(projectSpy));
-
-        const searchedProject = await makePrismaProjectRespository.findByTitle(
-            projectSpy.title
+    it("should return an array with tasks", async () => {
+        const { sut, repository } = makeSut();
+        const task = new Task(taskSpy);
+        await repository.create(
+            new Project({ ...projectSpy, tasks: [task] }, projectSpy.id)
         );
 
-        taskSpy.projectId = searchedProject!.id;
-        await makePrismaTaskRepository.create(new Task(taskSpy));
-
+        const searchedProject = await repository.findByTitle(projectSpy.title);
         const project = await sut.execute(searchedProject!.id);
 
         expect(project.tasks.length).toBe(1);
     });
 
     it("should return a project when a valid id is provided", async () => {
-        const { sut, makePrismaProjectRespository } = makeSut();
+        const { sut, repository } = makeSut();
+        await repository.create(new Project(projectSpy, projectSpy.id));
 
-        await makePrismaProjectRespository.create(new Project(projectSpy));
+        const project = await sut.execute(projectSpy.id);
 
-        const searchedProject = await makePrismaProjectRespository.findByTitle(
-            projectSpy.title
-        );
-        const project = await sut.execute(searchedProject!.id);
-
-        expect(project).toStrictEqual(searchedProject);
+        expect(project).toStrictEqual(new Project(projectSpy, projectSpy.id));
     });
 });

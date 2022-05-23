@@ -1,12 +1,12 @@
-import { PrismaTaskRepository } from "../../../infra/database/prisma/repositories/prisma.task.repository";
+import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
 import { ListAllTasksUseCase } from "./list-all-tasks-use-case";
 
 const makeSut = () => {
-    const makePrismaTaskRepository = new PrismaTaskRepository();
-    const sut = new ListAllTasksUseCase(makePrismaTaskRepository);
+    const repository = new InMemoryTaskRepository();
+    const sut = new ListAllTasksUseCase(repository);
 
     return {
-        makePrismaTaskRepository,
+        repository,
         sut,
     };
 };

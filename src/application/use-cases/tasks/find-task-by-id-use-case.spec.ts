@@ -1,19 +1,22 @@
+import crypto from "crypto";
 import { Task } from "../../../domain/task";
-import { PrismaTaskRepository } from "../../../infra/database/prisma/repositories/prisma.task.repository";
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
+import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
 import { MissingParamError } from "../../../utils/errors";
 import { FindTaskByIdUseCase } from "./find-task-by-id-use-case";
 
 const makeSut = () => {
-    const makePrismaTaskRepository = new PrismaTaskRepository();
-    const sut = new FindTaskByIdUseCase(makePrismaTaskRepository);
+    const repository = new InMemoryTaskRepository();
+    const sut = new FindTaskByIdUseCase(repository);
 
     return {
-        makePrismaTaskRepository,
+        repository,
         sut,
     };
 };
 
 const taskSpy = {
+    id: crypto.randomUUID(),
     title: "Test Find",
     projectId: "0cba49a5-d610-4b78-bfa6-68cc20b2b557",
     assignedTo: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
@@ -21,14 +24,6 @@ const taskSpy = {
 };
 
 describe("Find task by id use case", () => {
-    afterAll(async () => {
-        const { makePrismaTaskRepository } = makeSut();
-        const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
-        if (task) {
-            await makePrismaTaskRepository.delete(task.id);
-        }
-    });
-
     it("should throw an error when no task id is provided", async () => {
         const { sut } = makeSut();
         const promise = sut.execute("");
@@ -37,14 +32,11 @@ describe("Find task by id use case", () => {
     });
 
     it("should return a task when a valid id is provided", async () => {
-        const { sut, makePrismaTaskRepository } = makeSut();
-        await makePrismaTaskRepository.create(new Task(taskSpy));
+        const { sut, repository } = makeSut();
+        await repository.create(new Task(taskSpy, taskSpy.id));
 
-        const searchedTask = await makePrismaTaskRepository.findByTitle(
-            taskSpy.title
-        );
-        const task = await sut.execute(searchedTask!.id);
+        const task = await sut.execute(taskSpy.id);
 
-        expect(task).toStrictEqual(searchedTask);
+        expect(task).toBeTruthy();
     });
 });

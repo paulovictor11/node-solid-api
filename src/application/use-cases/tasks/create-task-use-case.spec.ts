@@ -1,18 +1,20 @@
-import { PrismaTaskRepository } from "../../../infra/database/prisma/repositories/prisma.task.repository";
+import crypto from "crypto";
+import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
 import { MissingParamError } from "../../../utils/errors";
 import { CreateTaskUseCase } from "./create-task-use-case";
 
 const makeSut = () => {
-    const makePrismaTaskRepository = new PrismaTaskRepository();
-    const sut = new CreateTaskUseCase(makePrismaTaskRepository);
+    const repository = new InMemoryTaskRepository();
+    const sut = new CreateTaskUseCase(repository);
 
     return {
-        makePrismaTaskRepository,
+        repository,
         sut,
     };
 };
 
 const taskSpy = {
+    id: crypto.randomUUID(),
     title: "Test Create",
     projectId: "0cba49a5-d610-4b78-bfa6-68cc20b2b557",
     assignedTo: "780b88dd-5aef-4e4a-9b5e-6facfabacd94",
@@ -20,14 +22,6 @@ const taskSpy = {
 };
 
 describe("Create task use case", () => {
-    afterAll(async () => {
-        const { makePrismaTaskRepository } = makeSut();
-        const task = await makePrismaTaskRepository.findByTitle(taskSpy.title);
-        if (task) {
-            await makePrismaTaskRepository.delete(task.id);
-        }
-    });
-
     it("should throw an error when no title is provided", () => {
         const { sut } = makeSut();
         const task = { ...taskSpy, title: "" };

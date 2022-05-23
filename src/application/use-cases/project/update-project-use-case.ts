@@ -1,5 +1,6 @@
 import { Project } from "../../../domain/project";
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
+import { MissingParamError } from "../../../utils/errors";
 import { IProjectRepository } from "../../repositories/domain/project-repository";
 
 interface IUpdateProjectUseCaseRequest {
@@ -15,8 +16,11 @@ export class UpdateProjectUseCase {
         { title, description, userId }: IUpdateProjectUseCaseRequest,
         id: string
     ): Promise<void> {
-        const searchedProject = await this.projectRepository.findById(id);
+        if (!id) {
+            throw new MissingParamError("project id");
+        }
 
+        const searchedProject = await this.projectRepository.findById(id);
         if (!searchedProject) {
             throw new NotFoundError("project");
         }

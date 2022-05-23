@@ -1,4 +1,5 @@
 import { Task } from "../../../domain/task";
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { MissingParamError } from "../../../utils/errors";
 import { ITaskRepository } from "../../repositories/domain/task-repository";
 
@@ -16,10 +17,13 @@ export class UpdateTaskUseCase {
         { title, projectId, assignedTo, completed }: IUpdateTaskUseCaseRequest,
         id: string
     ): Promise<void> {
-        const searchedTask = await this.taskRepository.findById(id);
-
-        if (!searchedTask) {
+        if (!id) {
             throw new MissingParamError("task id");
+        }
+
+        const searchedTask = await this.taskRepository.findById(id);
+        if (!searchedTask) {
+            throw new NotFoundError("task");
         }
 
         const task = new Task({ title, projectId, assignedTo, completed }, id);

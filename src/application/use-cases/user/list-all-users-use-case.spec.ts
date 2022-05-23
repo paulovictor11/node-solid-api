@@ -1,12 +1,12 @@
-import { PrismaUserRepository } from "../../../infra/database/prisma/repositories/prisma-user-repository";
+import { InMemoryUserRepository } from "../../../tests/repositories/InMemoryUserRepository";
 import { ListAllUsersUseCase } from "./list-all-users-use-case";
 
 const makeSut = () => {
-    const makePrismaUserRepository = new PrismaUserRepository();
-    const sut = new ListAllUsersUseCase(makePrismaUserRepository);
+    const repository = new InMemoryUserRepository();
+    const sut = new ListAllUsersUseCase(repository);
 
     return {
-        makePrismaUserRepository,
+        repository,
         sut,
     };
 };
