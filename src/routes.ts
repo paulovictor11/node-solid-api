@@ -45,8 +45,7 @@ routes
 routes
     .route("/projects")
     .get(new ListAllProjectsController().handle)
-    .post(new CreateProjectController().handle)
-    .post(new FindProjectByTitleController().handle);
+    .post(new CreateProjectController().handle);
 
 routes
     .route("/project/:id")
@@ -54,15 +53,18 @@ routes
     .put(new UpdateProjectController().handle)
     .delete(new DeleteProjectController().handle);
 
+routes.post("/project/title", new FindProjectByTitleController().handle);
+
 // ! Task routes
 routes
     .route("/tasks")
     .get(new ListAllTasksController().handle)
-    .post(new CreateTaskController().handle)
-    .post(new FindTaskByTitleController().handle);
+    .post(new CreateTaskController().handle);
 
 routes
     .route("/task/:id")
     .get(new FindTaskByIdController().handle)
     .put(new UpdateTaskController().handle)
     .delete(new DeleteTaskController().handle);
+
+routes.post("/task/title", new FindTaskByTitleController().handle);

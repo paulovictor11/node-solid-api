@@ -15,7 +15,7 @@ export class CreateProjectController implements IControllerRepository {
 
             await createProjectUseCase.execute({ title, description, userId });
 
-            return response.send();
+            return response.status(201).send();
         } catch (err: any) {
             return response.status(400).json({
                 message: err.message ?? "Unexpected Error",
