@@ -5,7 +5,7 @@ import { MissingParamError } from "../errors/missing-param-error";
 dotenv.config();
 
 export class TokenGenerator {
-    async generate(id: string) {
+    async generate(id: string): Promise<string> {
         if (!id) {
             throw new MissingParamError("id");
         }
