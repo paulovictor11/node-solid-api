@@ -40,10 +40,14 @@ describe("Find task by id use case", () => {
 
     it("should return a task when a valid id is provided", async () => {
         const { sut, repository } = makeSut();
-        await repository.create(new Task(taskSpy, taskSpy.id));
+        const task = new Task(taskSpy, taskSpy.id);
+        await repository.create(task);
 
-        const task = await sut.execute(taskSpy.id);
+        const result = await sut.execute(taskSpy.id);
 
-        expect(task).toBeTruthy();
+        expect(task.projectId).toBeTruthy();
+        expect(task.assignedTo).toBeTruthy();
+        expect(task.completed).not.toBeNull();
+        expect(result).toStrictEqual(task);
     });
 });

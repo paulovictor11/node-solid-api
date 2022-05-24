@@ -39,10 +39,13 @@ describe("Find user by id use case", () => {
 
     it("should return an user when a valid id is provided", async () => {
         const { sut, repository } = makeSut();
-        await repository.create(new User(userSpy, userSpy.id));
+        const user = new User(userSpy, userSpy.id);
+        await repository.create(user);
 
-        const user = await sut.execute(userSpy.id);
+        const result = await sut.execute(userSpy.id);
 
-        expect(user).toStrictEqual(new User(userSpy, userSpy.id));
+        expect(user.name).toBeTruthy();
+        expect(user.password).toBeTruthy();
+        expect(result).toStrictEqual(user);
     });
 });

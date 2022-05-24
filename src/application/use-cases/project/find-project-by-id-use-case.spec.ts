@@ -73,10 +73,13 @@ describe("Find project by id use case", () => {
 
     it("should return a project when a valid id is provided", async () => {
         const { sut, repository } = makeSut();
-        await repository.create(new Project(projectSpy, projectSpy.id));
+        const project = new Project(projectSpy, projectSpy.id);
+        await repository.create(project);
 
-        const project = await sut.execute(projectSpy.id);
+        const result = await sut.execute(projectSpy.id);
 
-        expect(project).toStrictEqual(new Project(projectSpy, projectSpy.id));
+        expect(project.description).toBeTruthy();
+        expect(project.userId).toBeTruthy();
+        expect(result).toStrictEqual(project);
     });
 });
