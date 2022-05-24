@@ -1,4 +1,4 @@
-import { MissingParamError } from "../errors";
+import { MissingParamError } from "../errors/missing-param-error";
 import validator from "validator";
 import { IEmailValidatorRepository } from "../../application/repositories/helper/email-validator-repository";
 

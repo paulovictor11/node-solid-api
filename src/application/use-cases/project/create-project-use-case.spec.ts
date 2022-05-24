@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { InMemoryProjectRepository } from "../../../tests/repositories/InMemoryProjectRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { CreateProjectUseCase } from "./create-project-use-case";
 
 const makeSut = () => {

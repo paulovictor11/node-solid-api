@@ -1,5 +1,5 @@
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { IUserRepository } from "../../repositories/domain/user-repository";
 
 export class DeleteUserUseCase {

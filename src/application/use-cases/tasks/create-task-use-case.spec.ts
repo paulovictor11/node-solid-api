@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { CreateTaskUseCase } from "./create-task-use-case";
 
 const makeSut = () => {

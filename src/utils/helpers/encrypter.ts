@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { IEncrypterRepository } from "../../application/repositories/helper/encrypter-repository";
-import { MissingParamError } from "../errors";
+import { MissingParamError } from "../errors/missing-param-error";
 
 export class Encrypter implements IEncrypterRepository {
     async compare(value: string, hash: string): Promise<boolean> {

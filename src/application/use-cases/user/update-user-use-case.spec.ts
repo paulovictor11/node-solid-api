@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { User } from "../../../domain/user";
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { InMemoryUserRepository } from "../../../tests/repositories/InMemoryUserRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { UpdateUserUseCase } from "./update-user-use-case";
 
 const makeSut = () => {

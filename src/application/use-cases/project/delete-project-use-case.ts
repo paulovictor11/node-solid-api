@@ -1,5 +1,5 @@
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { IProjectRepository } from "../../repositories/domain/project-repository";
 
 export class DeleteProjectUseCase {

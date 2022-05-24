@@ -1,5 +1,6 @@
 import { User } from "../../../domain/user";
-import { InvalidParamError, MissingParamError } from "../../../utils/errors";
+import { InvalidParamError } from "../../../utils/errors/invalid-param-error";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { IUserRepository } from "../../repositories/domain/user-repository";
 import { IEmailValidatorRepository } from "../../repositories/helper/email-validator-repository";
 import { IEncrypterRepository } from "../../repositories/helper/encrypter-repository";

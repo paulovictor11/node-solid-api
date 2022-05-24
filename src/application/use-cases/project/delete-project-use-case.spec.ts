@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { Project } from "../../../domain/project";
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { InMemoryProjectRepository } from "../../../tests/repositories/InMemoryProjectRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { DeleteProjectUseCase } from "./delete-project-use-case";
 
 const makeSut = () => {

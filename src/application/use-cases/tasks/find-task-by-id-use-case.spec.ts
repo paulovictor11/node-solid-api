@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { Task } from "../../../domain/task";
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { FindTaskByIdUseCase } from "./find-task-by-id-use-case";
 
 const makeSut = () => {
@@ -29,6 +29,13 @@ describe("Find task by id use case", () => {
         const promise = sut.execute("");
 
         expect(promise).rejects.toThrow(new MissingParamError("task id"));
+    });
+
+    it("should throw an error when an invalid task id is provided", async () => {
+        const { sut } = makeSut();
+        const promise = sut.execute(taskSpy.id);
+
+        expect(promise).rejects.toThrow(new NotFoundError("task"));
     });
 
     it("should return a task when a valid id is provided", async () => {

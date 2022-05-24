@@ -1,5 +1,6 @@
 import { Task } from "../../../domain/task";
-import { MissingParamError } from "../../../utils/errors";
+import { NotFoundError } from "../../../presentation/errors/not-found-error";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { ITaskRepository } from "../../repositories/domain/task-repository";
 
 export class FindTaskByIdUseCase {
@@ -10,6 +11,11 @@ export class FindTaskByIdUseCase {
             throw new MissingParamError("task id");
         }
 
-        return await this.taskRepository.findById(id);
+        const searchedTask = await this.taskRepository.findById(id);
+        if (!searchedTask) {
+            throw new NotFoundError("task");
+        }
+
+        return searchedTask;
     }
 }

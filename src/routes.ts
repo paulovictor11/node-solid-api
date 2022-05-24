@@ -6,6 +6,7 @@ import {
     ListAllProjectsController,
     UpdateProjectController,
 } from "./application/controllers/project";
+import { FindProjectByTitleController } from "./application/controllers/project/find-project-by-title-controller";
 import {
     CreateTaskController,
     DeleteTaskController,
@@ -13,6 +14,7 @@ import {
     ListAllTasksController,
     UpdateTaskController,
 } from "./application/controllers/task";
+import { FindTaskByTitleController } from "./application/controllers/task/find-task-by-title-controller";
 import {
     CreateUserController,
     DeleteUserController,
@@ -39,7 +41,8 @@ routes
 routes
     .route("/projects")
     .get(new ListAllProjectsController().handle)
-    .post(new CreateProjectController().handle);
+    .post(new CreateProjectController().handle)
+    .post(new FindProjectByTitleController().handle);
 
 routes
     .route("/projects/:id")
@@ -51,7 +54,8 @@ routes
 routes
     .route("/tasks")
     .get(new ListAllTasksController().handle)
-    .post(new CreateTaskController().handle);
+    .post(new CreateTaskController().handle)
+    .post(new FindTaskByTitleController().handle);
 
 routes
     .route("/tasks/:id")

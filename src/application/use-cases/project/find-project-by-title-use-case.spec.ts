@@ -4,7 +4,7 @@ import { Task } from "../../../domain/task";
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { InMemoryProjectRepository } from "../../../tests/repositories/InMemoryProjectRepository";
 import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { FindProjectByTitleUseCase } from "./find-project-by-title-use-case";
 
 const makeSut = () => {

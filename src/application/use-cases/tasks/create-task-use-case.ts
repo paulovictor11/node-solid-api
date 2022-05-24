@@ -1,5 +1,5 @@
 import { Task } from "../../../domain/task";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { ITaskRepository } from "../../repositories/domain/task-repository";
 
 interface ICreateTaskUseCaseRequest {

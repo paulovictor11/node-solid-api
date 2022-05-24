@@ -1,7 +1,8 @@
 import crypto from "crypto";
 import { User } from "../../../domain/user";
 import { InMemoryUserRepository } from "../../../tests/repositories/InMemoryUserRepository";
-import { InvalidParamError, MissingParamError } from "../../../utils/errors";
+import { InvalidParamError } from "../../../utils/errors/invalid-param-error";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { EmailValidator } from "../../../utils/helpers/email-validator";
 import { Encrypter } from "../../../utils/helpers/encrypter";
 import { CreateUserUseCase } from "./create-user-use-case";

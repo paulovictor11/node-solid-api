@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { Task } from "../../../domain/task";
 import { NotFoundError } from "../../../presentation/errors/not-found-error";
 import { InMemoryTaskRepository } from "../../../tests/repositories/InMemoryTaskRepository";
-import { MissingParamError } from "../../../utils/errors";
+import { MissingParamError } from "../../../utils/errors/missing-param-error";
 import { DeleteTaskUseCase } from "./delete-task-use-case";
 
 const makeSut = () => {
