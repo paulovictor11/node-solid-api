@@ -20,7 +20,7 @@ export class CreateTaskController implements IControllerRepository {
                 completed,
             });
 
-            return response.send();
+            return response.status(201).send();
         } catch (err: any) {
             return response.status(400).json({
                 message: err.message ?? "Unexpected Error",
