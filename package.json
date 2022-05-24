@@ -7,7 +7,8 @@
     "dev": "tsnd src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "test:e2e": "jest --config jest-e2e.config.ts"
   },
   "devDependencies": {
     "@swc/core": "^1.2.185",
@@ -18,9 +19,13 @@
     "@types/jest": "^27.5.1",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.31",
+    "@types/pg": "^8.6.5",
+    "@types/supertest": "^2.0.12",
     "@types/validator": "^13.7.2",
     "jest": "^28.1.0",
+    "pg": "^8.7.3",
     "prisma": "^3.13.0",
+    "supertest": "^6.2.3",
     "ts-node": "^10.7.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.4"

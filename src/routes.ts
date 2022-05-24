@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { LoginController } from "./application/controllers/auth/login-controller";
 import {
     CreateProjectController,
     DeleteProjectController,
@@ -25,6 +26,9 @@ import {
 
 export const routes = Router();
 
+// ! Authentication routes
+routes.post("/login", new LoginController().handle);
+
 // ! User routes
 routes
     .route("/users")
@@ -32,7 +36,7 @@ routes
     .post(new CreateUserController().handle);
 
 routes
-    .route("/users/:id")
+    .route("/user/:id")
     .get(new FindUserByIdController().handle)
     .put(new UpdateUserController().handle)
     .delete(new DeleteUserController().handle);
@@ -45,7 +49,7 @@ routes
     .post(new FindProjectByTitleController().handle);
 
 routes
-    .route("/projects/:id")
+    .route("/project/:id")
     .get(new FindProjectByIdController().handle)
     .put(new UpdateProjectController().handle)
     .delete(new DeleteProjectController().handle);
@@ -58,7 +62,7 @@ routes
     .post(new FindTaskByTitleController().handle);
 
 routes
-    .route("/tasks/:id")
+    .route("/task/:id")
     .get(new FindTaskByIdController().handle)
     .put(new UpdateTaskController().handle)
     .delete(new DeleteTaskController().handle);
