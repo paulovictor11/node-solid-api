@@ -1,11 +1,11 @@
 import request from "supertest";
 import { app } from "../../../app";
+import { faker } from "@faker-js/faker";
 
 const userSpy = {
-    id: "",
-    name: "Test",
-    email: "test@email.com",
-    password: "12345",
+    name: faker.name.findName(),
+    email: faker.internet.email(),
+    password: faker.random.alphaNumeric(),
 };
 
 describe("[e2e] Update user controller", () => {

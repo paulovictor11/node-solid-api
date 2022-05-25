@@ -1,18 +1,19 @@
 import request from "supertest";
 import { app } from "../../../app";
 import { Project } from "../../../domain/project";
+import { faker } from "@faker-js/faker";
 
 const projectSpy = async () => {
     await request(app).post("/users").send({
-        name: "Test",
-        email: "test@email.com",
-        password: "12345",
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: faker.random.alphaNumeric(),
     });
     const { body } = await request(app).get("/users").send();
 
     return {
-        title: "Test",
-        description: "Lorem ipsum",
+        title: faker.random.alpha(),
+        description: faker.lorem.sentence(),
         userId: body[0]._id,
     };
 };
@@ -20,9 +21,11 @@ const projectSpy = async () => {
 const project = async () => {
     const model = await projectSpy();
     await request(app).post("/projects").send(model);
-    const { body } = await request(app).get("/projects").send();
+    const { body } = await request(app).post("/project/title").send({
+        title: model.title,
+    });
 
-    return new Project(body[0].props, body[0]._id);
+    return new Project(body.props, body._id);
 };
 
 describe("[e2e] Delete project controller", () => {

@@ -298,6 +298,11 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
+"@faker-js/faker@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.0.1.tgz#6afdcd3f1000ad0382dda440f1746b5f0c43f832"
+  integrity sha512-d7liuZh+aSPJ7JsWQ/Mu59HQDhYjWk7EPiVGMTL7KUEyrzYdKuMVfD3R0eCW8MezS20n4LoX/9zBfIV9zWdTrA==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"

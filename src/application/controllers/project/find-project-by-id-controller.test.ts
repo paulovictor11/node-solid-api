@@ -1,18 +1,19 @@
 import request from "supertest";
 import { app } from "../../../app";
 import { Project } from "../../../domain/project";
+import { faker } from "@faker-js/faker";
 
 const projectSpy = async () => {
     await request(app).post("/users").send({
-        name: "Test",
-        email: "test@email.com",
-        password: "12345",
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: faker.random.alphaNumeric(),
     });
     const { body } = await request(app).get("/users").send();
 
     return {
-        title: "Test",
-        description: "Lorem ipsum",
+        title: faker.random.alpha(),
+        description: faker.lorem.sentence(),
         userId: body[0]._id,
     };
 };
